@@ -14,8 +14,8 @@ type SmartContract struct {
 
 // Asset describes basic details of what makes up a simple asset
 type Asset struct {
-	ID             string  `json:"ID"`
-	Ts             int64   `json:"Ts"`
+	ID             string  `json:"id"`
+	Ts             int64   `json:"ts"`
 	Sym            string  `json:"sym"`
 	Size           float64 `json:"size"`
 	Side           string  `json:"side"`
@@ -25,8 +25,8 @@ type Asset struct {
 // InitLedger adds a base set of assets to the ledger
 func (s *SmartContract) InitLedger(ctx contractapi.TransactionContextInterface) error {
 	assets := []Asset{
-		{ID: "1", Ts: 1000000000000, Sym: "XAU_USD", Size: 1.1, Side: "LONG", Price: 1900.1},
-		{ID: "2", Ts: 1000000000001, Sym: "XAU_USD", Size: 1.1, Side: "SHORT", Price: 1900.2},
+		{ID: "1", Ts: 1621543917, Sym: "XAU_USD", Size: 1.0, Side: "LONG", Price: 1900.1},
+		{ID: "2", Ts: 1621543918, Sym: "XAU_USD", Size: 1.0, Side: "SHORT", Price: 1900.2},
 	}
 
 	for _, asset := range assets {
