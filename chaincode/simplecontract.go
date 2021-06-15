@@ -14,19 +14,21 @@ type SmartContract struct {
 
 // Asset describes basic details of what makes up a simple asset
 type Asset struct {
-	ID             string  `json:"id"`
-	Ts             int64   `json:"ts"`
-	Sym            string  `json:"sym"`
-	Size           float64 `json:"size"`
-	Side           string  `json:"side"`
-	Price          float64 `json:"price"`
+	ID    string  `json:"id"`
+	Ts    int64   `json:"ts"`
+	Sym   string  `json:"sym"`
+	Size  float64 `json:"size"`
+	Side  string  `json:"side"`
+	Price float64 `json:"price"`
+	TP    float64 `json:"tp"`
+	SL    float64 `json:"sl"`
 }
 
 // InitLedger adds a base set of assets to the ledger
 func (s *SmartContract) InitLedger(ctx contractapi.TransactionContextInterface) error {
 	assets := []Asset{
-		{ID: "1", Ts: 1621543917, Sym: "XAU_USD", Size: 1.0, Side: "LONG", Price: 1900.1},
-		{ID: "2", Ts: 1621543918, Sym: "XAU_USD", Size: 1.0, Side: "SHORT", Price: 1900.2},
+		{ID: "1", Ts: 1621543917, Sym: "XAU_USD", Size: 1.0, Side: "LONG", Price: 1900.1, TP: 1930.1, SL: 1890.1},
+		{ID: "2", Ts: 1621543918, Sym: "XAU_USD", Size: 1.0, Side: "SHORT", Price: 1900.2, TP: 1930.2, SL: 1890.2},
 	}
 
 	for _, asset := range assets {
@@ -45,7 +47,7 @@ func (s *SmartContract) InitLedger(ctx contractapi.TransactionContextInterface) 
 }
 
 // CreateAsset issues a new asset to the world state with given details.
-func (s *SmartContract) CreateAsset(ctx contractapi.TransactionContextInterface, id string, ts int64, sym string, size float64, side string, price float64) error {
+func (s *SmartContract) CreateAsset(ctx contractapi.TransactionContextInterface, id string, ts int64, sym string, size float64, side string, price float64, tp float64, sl float64) error {
 	exists, err := s.AssetExists(ctx, id)
 	if err != nil {
 		return err
@@ -55,12 +57,14 @@ func (s *SmartContract) CreateAsset(ctx contractapi.TransactionContextInterface,
 	}
 
 	asset := Asset{
-		ID:             id,
-		Ts:             ts,
-		Sym:            sym,
-		Size:           size,
-		Side:           side,
-		Price:          price,
+		ID:    id,
+		Ts:    ts,
+		Sym:   sym,
+		Size:  size,
+		Side:  side,
+		Price: price,
+		TP:    tp,
+		SL:    sl,
 	}
 	assetJSON, err := json.Marshal(asset)
 	if err != nil {
@@ -90,7 +94,7 @@ func (s *SmartContract) ReadAsset(ctx contractapi.TransactionContextInterface, i
 }
 
 // UpdateAsset updates an existing asset in the world state with provided parameters.
-func (s *SmartContract) UpdateAsset(ctx contractapi.TransactionContextInterface, id string, ts int64, sym string, size float64, side string, price float64) error {
+func (s *SmartContract) UpdateAsset(ctx contractapi.TransactionContextInterface, id string, ts int64, sym string, size float64, side string, price float64, tp float64, sl float64) error {
 	exists, err := s.AssetExists(ctx, id)
 	if err != nil {
 		return err
@@ -101,12 +105,14 @@ func (s *SmartContract) UpdateAsset(ctx contractapi.TransactionContextInterface,
 
 	// overwriting original asset with new asset
 	asset := Asset{
-		ID:             id,
-		Ts:             ts,
-		Sym:            sym,
-		Size:           size,
-		Side:           side,
-		Price:          price,
+		ID:    id,
+		Ts:    ts,
+		Sym:   sym,
+		Size:  size,
+		Side:  side,
+		Price: price,
+		TP:    tp,
+		SL:    sl,
 	}
 	assetJSON, err := json.Marshal(asset)
 	if err != nil {
@@ -140,13 +146,13 @@ func (s *SmartContract) AssetExists(ctx contractapi.TransactionContextInterface,
 }
 
 // TransferAsset updates the owner field of asset with given id in world state.
-//func (s *SmartContract) TransferAsset(ctx contractapi.TransactionContextInterface, id string, newOwner string) error {
+//func (s *SmartContract) TransferAsset(ctx contractapi.TransactionContextInterface, id string, newSize float64) error {
 //	asset, err := s.ReadAsset(ctx, id)
 //	if err != nil {
 //		return err
 //	}
 //
-//	asset.Owner = newOwner
+//	asset.Size = newSize
 //	assetJSON, err := json.Marshal(asset)
 //	if err != nil {
 //		return err

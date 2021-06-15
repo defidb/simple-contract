@@ -30,7 +30,9 @@ timestamp (example: "1623747164")
 instrument (example: "XAU_USD")
 size (example: "1.1")
 side (example: "LONG")
-mid (example: "1900.4")
+price (example: "1900.4")
+tp (example: "1930.4")
+sl (example: "1890.4")
 ```
 
 Create channel:
