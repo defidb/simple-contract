@@ -23,6 +23,16 @@ export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/org2.examp
 export CORE_PEER_ADDRESS=localhost:9051
 ```
 
+Arguments:
+```
+id (example: "7")
+timestamp (example: "1623747164")
+instrument (example: "XAU_USD")
+size (example: "1.1")
+side (example: "LONG")
+mid (example: "1900.4")
+```
+
 Create channel:
 ```shell
 ./network.sh up createChannel -c uni
