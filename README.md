@@ -25,7 +25,7 @@ export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/org2.examp
 export CORE_PEER_ADDRESS=localhost:9051
 ```
 
-Arguments:
+Arguments: (TId, CId, TTs generated)
 ```
 id (example: "7")
 timestamp (example: "1623747164")

@@ -3,8 +3,8 @@ package chaincode
 import (
 	"encoding/json"
 	"fmt"
-
 	"github.com/hyperledger/fabric-contract-api-go/contractapi"
+	"strconv"
 )
 
 // SmartContract provides functions for managing an Asset
@@ -14,6 +14,9 @@ type SmartContract struct {
 
 // Asset describes basic details of what makes up a simple asset
 type Asset struct {
+	TId   string
+	CId   string
+	TTs   float64
 	ID    string  `json:"id"`
 	Ts    int64   `json:"ts"`
 	Sym   string  `json:"sym"`
@@ -26,9 +29,16 @@ type Asset struct {
 
 // InitLedger adds a base set of assets to the ledger
 func (s *SmartContract) InitLedger(ctx contractapi.TransactionContextInterface) error {
+
+	tts, err := ctx.GetStub().GetTxTimestamp()
+	if err != nil {
+		return err
+	}
+	ttso, err := strconv.ParseFloat(fmt.Sprintf("%d.%d", tts.Seconds, tts.Nanos), 64)
+
 	assets := []Asset{
-		{ID: "1", Ts: 1621543917, Sym: "XAU_USD", Size: 1.0, Side: "LONG", Price: 1900.1, TP: 1930.1, SL: 1890.1},
-		{ID: "2", Ts: 1621543918, Sym: "XAU_USD", Size: 1.0, Side: "SHORT", Price: 1900.2, TP: 1930.2, SL: 1890.2},
+		{TId: ctx.GetStub().GetTxID(), CId: ctx.GetStub().GetChannelID(), TTs: ttso, ID: "1", Ts: 1621543917, Sym: "XAU_USD", Size: 1.0, Side: "LONG", Price: 1900.1, TP: 1930.1, SL: 1890.1},
+		{TId: ctx.GetStub().GetTxID(), CId: ctx.GetStub().GetChannelID(), TTs: ttso, ID: "2", Ts: 1621543918, Sym: "XAU_USD", Size: 1.0, Side: "SHORT", Price: 1900.2, TP: 1930.2, SL: 1890.2},
 	}
 
 	for _, asset := range assets {
@@ -56,11 +66,20 @@ func (s *SmartContract) CreateAsset(ctx contractapi.TransactionContextInterface,
 		return fmt.Errorf("the asset %s already exists", id)
 	}
 
+	tts, err := ctx.GetStub().GetTxTimestamp()
+	if err != nil {
+		return err
+	}
+	ttso, err := strconv.ParseFloat(fmt.Sprintf("%d.%d", tts.Seconds, tts.Nanos), 64)
+
 	asset := Asset{
+		TId:   ctx.GetStub().GetTxID(),
+		CId:   ctx.GetStub().GetChannelID(),
+		TTs:   ttso,
 		ID:    id,
 		Ts:    ts,
 		Sym:   sym,
-		Size:  size,
+ 		Size:  size,
 		Side:  side,
 		Price: price,
 		TP:    tp,
@@ -103,8 +122,17 @@ func (s *SmartContract) UpdateAsset(ctx contractapi.TransactionContextInterface,
 		return fmt.Errorf("the asset %s does not exist", id)
 	}
 
+	tts, err := ctx.GetStub().GetTxTimestamp()
+	if err != nil {
+		return err
+	}
+	ttso, err := strconv.ParseFloat(fmt.Sprintf("%d.%d", tts.Seconds, tts.Nanos), 64)
+
 	// overwriting original asset with new asset
 	asset := Asset{
+		TId:   ctx.GetStub().GetTxID(),
+		CId:   ctx.GetStub().GetChannelID(),
+		TTs:   ttso,
 		ID:    id,
 		Ts:    ts,
 		Sym:   sym,
