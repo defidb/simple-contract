@@ -1,4 +1,4 @@
-module github.com/janrockdev/simplecontract
+module github.com/janrockdev/simple-contract
 
 go 1.17
 
