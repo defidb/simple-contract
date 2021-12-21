@@ -3,8 +3,8 @@ package main
 import (
 	"log"
 
-	"github.com/defidb/simplecontract/chaincode"
 	"github.com/hyperledger/fabric-contract-api-go/contractapi"
+	"github.com/janrockdev/simplecontract/chaincode"
 )
 
 func main() {

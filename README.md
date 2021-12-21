@@ -1,5 +1,7 @@
 # Blueprint/Boilerplate For Golang Smart-Contract Hyperledger Projects
 
+Version: 1.0
+
 ### Hyperledger deployment:
 
 
